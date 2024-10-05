@@ -35,7 +35,7 @@ app.post('/request-reset', (req, res) => {
     console.log("hello le monde")
     const encodedData = req.query.mail;
   //  console.log("votre mail est",encodedData)
-    const { name, lastName,  number,  EMail,  Message } = req.body;
+    const { name, lastName, number,EMail, Message, organigrame} = req.body;
    console.log(name, lastName,  number,  EMail,  Message)
 
   
@@ -53,7 +53,9 @@ app.post('/request-reset', (req, res) => {
     html: `
       <p>Message de ${name} ${lastName}</p>
       <p>Numéro: ${number}</p>
-      <p>Message: ${Message}</p>
+         <p>Organisme: ${organigrame}</p>
+        <p>Message: ${Message}</p>
+         <p>Email: ${EMail}</p>
     `,
     replyTo:  EMail
 };
