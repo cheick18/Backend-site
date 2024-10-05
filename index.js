@@ -1,13 +1,18 @@
-const express = require('express');
+const express = require('express')
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const path = require('path');
 require('dotenv').config();
 const cors = require('cors');
+const corsOptions = {
+  origin: 'https://www.famindaconcept.com', // Remplace par le domaine que tu veux autoriser
+  methods: ['GET', 'POST'], 
+  credentials: true, 
+};
 
 const app = express();
-app.use(cors()); 
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
