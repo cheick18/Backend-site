@@ -52,8 +52,8 @@ app.post('/request-reset', (req, res) => {
   const resetLink = 'google.com';
 
   const mailOptions = {
-    from: 'zilatan210@gmail.com',
-    to: 'zilatan210@gmail.com', 
+    from:  EMail,
+    to:  EMail, 
     subject: `Message de ${name+" "+lastName}`,
     html: `
       <p>Message de ${name} ${lastName}</p>
