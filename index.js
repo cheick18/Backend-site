@@ -33,20 +33,74 @@ const users = {}; // { email: { passwordHash: '', resetToken: '' } }
 const tokens = {}; // Pour la validation des tokens
 
 
+app.post('/request-reset', async (req, res) => {
+  try {
+    console.log("=== REQUEST RECEIVED ===");
+
+    // Vérifier le body
+    console.log("BODY:", req.body);
+
+    const { name, lastName, number, EMail, Message, organigrame } = req.body;
+
+    if (!name || !lastName || !EMail) {
+      console.log("❌ Champs manquants");
+      return res.status(400).json({ error: "Champs requis manquants" });
+    }
+
+    console.log("DATA:", { name, lastName, number, EMail, Message, organigrame });
+
+    // Vérifier les variables d'env
+    console.log("ENV MAIL:", process.env.SECRET_MAIL);
+    console.log("ENV PASS:", process.env.SECRET_PASS ? "OK" : "MISSING");
+
+    const mailOptions = {
+      from: process.env.SECRET_MAIL,
+      to: process.env.SECRET_MAIL,
+      subject: `Message de ${name} ${lastName}`,
+      html: `
+        <p><b>Nom:</b> ${name} ${lastName}</p>
+        <p><b>Numéro:</b> ${number}</p>
+        <p><b>Organisme:</b> ${organigrame}</p>
+        <p><b>Message:</b> ${Message}</p>
+        <p><b>Email:</b> ${EMail}</p>
+      `,
+      replyTo: EMail
+    };
+
+    // Envoi du mail (version await)
+    const info = await transporter.sendMail(mailOptions);
+
+    console.log("✅ MAIL SENT:", info.response);
+
+    return res.status(200).json({
+      success: true,
+      message: "Email envoyé",
+      response: info.response
+    });
+
+  } catch (error) {
+    console.error("🔥 ERREUR SERVER:", error);
+
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+      stack: error.stack // 👈 super utile en dev (à enlever en prod après)
+    });
+  }
+});
 
 
-
+/*
 app.post('/request-reset', (req, res) => {
   console.log("voici le server")
     console.log("hello le monde")
     const encodedData = req.query.mail;
-  //  console.log("votre mail est",encodedData)
+ 
     const { name, lastName, number,EMail, Message, organigrame} = req.body;
    console.log(name, lastName,  number,  EMail,  Message)
 
   
- // const token = crypto.randomBytes(20).toString('hex');
- // tokens[token] = 'zilatan210@gmail.com';
+
 
 
 
@@ -74,6 +128,7 @@ transporter.sendMail(mailOptions, (error, info) => {
   res.status(200).send('Email sent: ' + info.response);
 });
 });
+*/
 
 app.get('/test', (req, res) => {
   res.sendFile(path.join(__dirname, 'SendMail.html'));
