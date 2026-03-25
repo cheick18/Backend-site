@@ -37,6 +37,7 @@ const tokens = {}; // Pour la validation des tokens
 
 
 app.post('/request-reset', (req, res) => {
+  console.log("voici le server")
     console.log("hello le monde")
     const encodedData = req.query.mail;
   //  console.log("votre mail est",encodedData)
