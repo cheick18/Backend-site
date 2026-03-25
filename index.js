@@ -17,16 +17,18 @@ app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
 
-
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
-  secure: true, // important
+  secure: true, // true pour le port 465, false pour le port 587
   auth: {
     user: process.env.SECRET_MAIL,
     pass: process.env.SECRET_PASS
   },
-  connectionTimeout: 10000, // 10s
+  tls: {
+    // Ceci aide si le serveur de l'hébergeur a des problèmes de résolution de certificat
+    rejectUnauthorized: false 
+  }
 });
 
 
